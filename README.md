@@ -7,8 +7,6 @@ for medical image captioning and deploys it via **Gradio**.
 The application accepts medical images (X-ray, MRI, CT) and generates
 clinically styled descriptive captions.
 
-> Base model weights are **NOT stored in this repository**  
-> They are **automatically downloaded from Hugging Face at runtime**
 
 ---
 
@@ -17,26 +15,27 @@ clinically styled descriptive captions.
 - Linux (Ubuntu recommended)
 - Python ≥ 3.10
 - NVIDIA GPU (recommended, 16GB+ VRAM)
-- CUDA 12.x
+- CUDA 12.8
 - Internet access (for first-time model download)
 
 ---
 
-## Repository Structure (Important)
+## Repository Structure
 
 ```
 
 .
-├── train_.py              # LoRA fine-tuning script
-├── test_lora.py           # Inference test script
-├── gradio_app.py          # Gradio deployment app
+├── train_.py                   # LoRA fine-tuning script
+├── create_real_dataset.py      # JSON text format script
+├── test_lora.py                # Inference test script
+├── gradio_app.py               # Gradio deployment app
 ├── dataset/
 │   ├── train.json
 │   └── val.json
 ├── data/
-│   └── images/            # Sample medical images
+│   └── images/                 # Consists sample medical images
 ├── outputs/
-│   └── medgemma-lora/     # LoRA adapter output (created after training)
+│   └── medgemma-lora/          # LoRA adapter output (created after training)
 ├── requirements.txt
 └── README.md
 
@@ -82,7 +81,7 @@ Image paths must be relative paths and point to real image files.
 
 ---
 
-## Step 4: Train LoRA Adapter (Optional)
+## Step 4: Train LoRA Adapter
 
 Run this **only if you want to fine-tune** MedGemma on your dataset.
 
