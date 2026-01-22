@@ -4,18 +4,21 @@ from transformers import AutoProcessor, AutoModelForImageTextToText
 from peft import PeftModel
 
 # --------------------
-# Paths
+# Paths (MINIMAL FIX)
 # --------------------
-BASE_MODEL_PATH = "./models/medgemma-1.5-4b-it"
-LORA_MODEL_PATH = "./medgemma-lora-output"
-IMAGE_PATH = "./data/images/xray1.jpeg"  # Change to your test image
+BASE_MODEL_PATH = "google/medgemma-1.5-4b-it"   # ✅ download from Hugging Face
+LORA_MODEL_PATH = "./outputs/medgemma-lora"     # ✅ where Trainer saves adapters
+IMAGE_PATH = "./data/images/xray1.jpeg"         # test image
 
 # --------------------
 # Load base model and processor
 # --------------------
 print("Loading base model and processor...")
 
-processor = AutoProcessor.from_pretrained(BASE_MODEL_PATH, use_fast=False)
+processor = AutoProcessor.from_pretrained(
+    BASE_MODEL_PATH,
+    use_fast=False
+)
 
 base_model = AutoModelForImageTextToText.from_pretrained(
     BASE_MODEL_PATH,
@@ -27,8 +30,14 @@ base_model = AutoModelForImageTextToText.from_pretrained(
 # Apply LoRA adapter
 # --------------------
 print("Applying LoRA adapter...")
-model = PeftModel.from_pretrained(base_model, LORA_MODEL_PATH)
-model = model.to(torch.float32)  # ✅ Convert to FP32 for stable generation
+
+model = PeftModel.from_pretrained(
+    base_model,
+    LORA_MODEL_PATH
+)
+
+# FP32 for stable generation (important)
+model = model.to(torch.float32)
 model.eval()
 
 # --------------------
@@ -69,8 +78,8 @@ inputs = processor(
 with torch.no_grad():
     outputs = model.generate(
         **{k: v.to(model.device) for k, v in inputs.items()},
-        max_new_tokens=128,  # prevent extremely long sequences
-        do_sample=False       # deterministic output
+        max_new_tokens=128,
+        do_sample=False
     )
 
 # --------------------
