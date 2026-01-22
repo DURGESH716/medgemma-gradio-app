@@ -1,0 +1,2 @@
+torch torchvision torchaudio transformers datasets peft accelerate safetensors huggingface_hub pillow gradio bitsandbytes numpy sentencepiece tokenizers scikit-learn
+torch
