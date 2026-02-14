@@ -79,6 +79,9 @@ We implement **LoRA (Low-Rank Adaptation)** to enable high-fidelity fine-tuning 
 Ensure you are using Python 3.10+ on a Linux environment with CUDA 12.8.
 
 ```bash
+git clone https://github.com/DURGESH716/Multimodal_MedGemma_FineTuned_AI_Medical_System.git
+cd Multimodal_MedGemma_FineTuned_AI_Medical_System
+
 python3 -m venv .venv311
 source .venv311/bin/activate
 pip install -r requirements.txt
