@@ -4,15 +4,11 @@ import gradio as gr
 from transformers import AutoProcessor, AutoModelForImageTextToText
 from peft import PeftModel
 
-# --------------------
-# Paths (MINIMAL FIX ONLY)
-# --------------------
-BASE_MODEL_PATH = "google/medgemma-1.5-4b-it"   # ✅ download from Hugging Face
-LORA_MODEL_PATH = "./outputs/medgemma-lora"     # ✅ Trainer output directory
 
-# --------------------
-# Load model and processor
-# --------------------
+BASE_MODEL_PATH = "google/medgemma-1.5-4b-it"   
+LORA_MODEL_PATH = "./outputs/medgemma-lora"    
+
+
 processor = AutoProcessor.from_pretrained(BASE_MODEL_PATH, use_fast=False)
 
 base_model = AutoModelForImageTextToText.from_pretrained(
@@ -25,9 +21,7 @@ model = PeftModel.from_pretrained(base_model, LORA_MODEL_PATH)
 model = model.to(torch.float32)
 model.eval()
 
-# --------------------
-# Prediction function
-# --------------------
+
 def predict(image: Image.Image):
     messages = [
         {
@@ -66,9 +60,7 @@ def predict(image: Image.Image):
     caption = processor.decode(outputs[0], skip_special_tokens=True)
     return caption
 
-# --------------------
-# Gradio interface
-# --------------------
+
 demo = gr.Interface(
     fn=predict,
     inputs=gr.Image(type="pil"),
